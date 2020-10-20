@@ -24,7 +24,6 @@ class UserService
 
     public function createUser($name, $email, $password)
     {
-        dd('user');
         $user = $this->userRepository->getUserByEmail($email);
         if(count($user) > 0){
             return false;
