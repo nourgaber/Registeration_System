@@ -5,9 +5,11 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\LoginRequest;
 use App\Providers\RouteServiceProvider;
+use App\Services\UserService;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
 use Auth;
+use Carbon\Carbon;
 use Illuminate\Validation\ValidationException;
 
 class LoginController extends Controller
@@ -31,16 +33,18 @@ class LoginController extends Controller
      * @var string
      */
     protected $redirectTo = RouteServiceProvider::HOME;
+    protected $userService;
 
     /**
      * Create a new controller instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct(UserService $userService)
     {
         $this->middleware('guest')->except('logout');
         $this->middleware('guest:admin')->except('logout');
+        $this->userService = $userService;
 
     }
 
@@ -63,5 +67,11 @@ class LoginController extends Controller
       $this->username() => [trans('auth.failed')],
     ]);
   } 
+
+  function authenticated(Request $request, $user)
+{
+    $this->userService->updateUserById($user->id, array('last_login_at' => Carbon::now()->toDateTimeString()));
+
+}
 
 }

@@ -40,6 +40,9 @@ class DeleteUnActiveUsers extends Command
      */
     public function handle()
     {
-        $this->userService ;
+       $unActiveUsers = $this->userService->getUnactiveUsers() ;
+       if(count($unActiveUsers) > 0){
+        $this->userService->deleteUsersByIds($unActiveUsers->pluck('id')->toArray());
+       }
     }
 }

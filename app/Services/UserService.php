@@ -24,32 +24,41 @@ class UserService
 
     public function createUser($name, $email, $password)
     {
-        $user = $this->userRepository->getUserByEmail($email);
-        if(count($user) > 0){
-            return false;
-        }
+        
         $user = $this->userRepository->createUser($name, $email, $password);
         return $user;
+    }
+
+    public function getUnactiveUsers()
+    {
+        return $this->userRepository->getUnactiveUsers();
+    }
+
+    public function deleteUsersByIds(array $ids){
+        return $this->userRepository->deleteUsersByIds($ids);
     }
 
     public function updateUserById($id, array $options)
     {
         $userOptions = array();
-        if(!is_null($options['email'])){
+        if(isset($options['email'])){
             $userOptions['email'] = $options['email'];
         }
 
-        if(!is_null($options['first_name'])){
+        if(isset($options['first_name'])){
             $userOptions['first_name'] = $options['first_name'];
         }
 
-        if(!is_null($options['last_name'])){
+        if(isset($options['last_name'])){
             $userOptions['last_name'] = $options['last_name'];
         }
-        if(!is_null($options['mobile'])){
+        if(isset($options['mobile'])){
             $userOptions['mobile'] = $options['mobile'];
         }
-  
+        if(isset($options['last_login_at'])){
+            $userOptions['last_login_at'] = $options['last_login_at'];
+        }
+        
       
         $user = $this->userRepository->updateUserById($id, $userOptions);
         return $user;
