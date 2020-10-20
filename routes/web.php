@@ -14,10 +14,10 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('auth/login');
 });
 
-Auth::routes();
+Auth::routes(['verify' => true]);
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
@@ -27,5 +27,5 @@ Route::get('/register/admin', 'App\Http\Controllers\Auth\RegisterController@show
 Route::post('/login/admin', 'App\Http\Controllers\Auth\LoginController@adminLogin');
 Route::post('/register/admin', 'App\Http\Controllers\Auth\RegisterController@createAdmin');
 
-Route::view('/home', 'home')->middleware('auth');
+Route::view('/home', 'home')->middleware(['auth', 'verified']);
 Route::view('/admin', 'admin');
