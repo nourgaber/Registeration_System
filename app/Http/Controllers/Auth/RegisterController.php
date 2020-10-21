@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\AdminRequest;
+use App\Http\Requests\AdminRegisterationRequest;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Hash;
@@ -80,7 +80,7 @@ class RegisterController extends Controller
         return view('auth.register', ['url' => 'admin']);
     }
 
-    protected function createAdmin(AdminRequest $request)
+    protected function createAdmin(AdminRegisterationRequest $request)
     {
         $admin =  $this->adminService->createAdmin($request['name'], $request['email'], $request['password']); 
         return redirect()->intended('login/admin');
