@@ -5,7 +5,7 @@ namespace App\Exceptions;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Illuminate\Auth\AuthenticationException;
 use Throwable;
-use Auth; 
+use Auth;
 class Handler extends ExceptionHandler
 {
     /**
@@ -37,6 +37,12 @@ class Handler extends ExceptionHandler
         //
     }
 
+    /**
+     * @param \Illuminate\Http\Request                 $request
+     * @param \Illuminate\Auth\AuthenticationException $exception
+     *
+     * @return \Illuminate\Http\JsonResponse|\Illuminate\Http\RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     */
     protected function unauthenticated($request, AuthenticationException $exception)
         {
             if ($request->expectsJson()) {

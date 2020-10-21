@@ -7,6 +7,13 @@ use Illuminate\Support\Str;
 
 class AdminRepository
 {
+    /**
+     * @param $name
+     * @param $email
+     * @param $password
+     *
+     * @return \App\Models\Admin
+     */
     public function createAdmin($name, $email, $password)
     {
         $admin = new Admin;
@@ -18,7 +25,12 @@ class AdminRepository
         return $admin;
     }
 
-    
+    /**
+     * @param       $adminId
+     * @param array $options
+     *
+     * @return mixed
+     */
     public function updateAdminById($adminId, array $options)
     {
         $admin = Admin::where('id', $adminId)->update($options);

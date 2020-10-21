@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Http\Controllers;
 
 use App\Http\Requests\AdminRegisterationRequest;
@@ -16,16 +17,23 @@ class AuthController extends Controller
     protected $userService;
     protected $adminService;
 
+    /**
+     * AuthController constructor.
+     *
+     * @param \App\Services\UserService  $userservice
+     * @param \App\Services\AdminService $adminService
+     */
     public function __construct(UserService $userservice, AdminService $adminService)
     {
         $this->userService = $userservice;
         $this->adminService = $adminService;
-        $this->middleware('auth:api')->except('login', 'register','adminRegister');
+        $this->middleware('auth:api')->except('login', 'register', 'adminRegister');
         // $this->middleware('auth:admin-api')->except('login', 'adminRegister');
     }
 
     /**
-     * @param \Illuminate\Http\Request $request
+     * @param \App\Http\Requests\UserRegisterationRequest $request
+     *
      * @return \Illuminate\Http\JsonResponse
      */
     public function register(UserRegisterationRequest $request): JsonResponse
@@ -37,6 +45,12 @@ class AuthController extends Controller
             return $this->respondWithToken($token);
         }
     }
+
+    /**
+     * @param \App\Http\Requests\AdminRegisterationRequest $request
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function adminRegister(AdminRegisterationRequest $request): JsonResponse
     {
         $user = $this->adminService->createAdmin($request->name, $request->email, $request->password);
@@ -46,8 +60,10 @@ class AuthController extends Controller
             return $this->respondWithToken($token);
         }
     }
+
     /**
      * @param \Illuminate\Http\Request $request
+     *
      * @return \Illuminate\Http\JsonResponse
      */
     public function login(LoginRequest $request): JsonResponse
@@ -57,7 +73,7 @@ class AuthController extends Controller
         if (!$token = Auth::guard($guard)->attempt($credentials)) {
             return response()->json(['message' => 'Invalid username or password.'], 401);
         }
-       
+
         return $this->respondWithToken($token);
     }
 
@@ -88,6 +104,7 @@ class AuthController extends Controller
 
     /**
      * @param string $token
+     *
      * @return \Illuminate\Http\JsonResponse
      */
     protected function respondWithToken(string $token): JsonResponse

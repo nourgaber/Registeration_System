@@ -9,10 +9,10 @@ use Illuminate\Http\Request;
 class ApiGuard
 {
     /**
-     * Handle an incoming request.
+     * @param          $request
+     * @param \Closure $next
+     * @param null     $guard
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \Closure  $next
      * @return mixed
      */
     public function handle($request, Closure $next, $guard = null)

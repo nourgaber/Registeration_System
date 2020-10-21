@@ -31,3 +31,22 @@ Route::group(['prefix' => 'auth/admin', 'middleware' => 'api.guard:admin-api'], 
     Route::post('logout ', 'App\Http\Controllers\AuthController@logout');
     Route::get('user ', 'App\Http\Controllers\AuthController@user');
 });
+
+
+Route::middleware('auth:api')->put('/user/product', 'App\Http\Controllers\ProductController@updateUserProduct');
+Route::middleware('auth:api')->post('/user/product', 'App\Http\Controllers\ProductController@createUserProduct');
+;
+
+Route::group(['prefix' => 'categories', 'middleware' => 'api.guard:api'], function () {
+    Route::post('/', 'App\Http\Controllers\CategoryController@createCategory');
+    Route::get('{category_id}', 'App\Http\Controllers\CategoryController@getCategory');
+    Route::put('{category_id}', 'App\Http\Controllers\CategoryController@updateCategoryById');
+    Route::delete('{category_id}', 'App\Http\Controllers\CategoryController@deleteCategoryById');
+    Route::group(['prefix' => '{category_id}/products', 'middleware' => 'api.guard:api'], function () {
+        Route::post('/', 'App\Http\Controllers\ProductController@createProduct');
+        Route::get('{product_id}', 'App\Http\Controllers\ProductController@getProduct');
+        Route::put('{product_id}', 'App\Http\Controllers\ProductController@updateProductById');
+        Route::delete('{product_id}', 'App\Http\Controllers\ProductController@create');
+    
+    });
+});
